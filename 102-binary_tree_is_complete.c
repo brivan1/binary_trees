@@ -16,6 +16,7 @@ int binary_tree_is_complete(const binary_tree_t *tree);
  */
 levelorder_queue_t *create_node(binary_tree_t *node)
 {
+<<<<<<< HEAD
 	levelorder_queue_t *new;
 
 	new = malloc(sizeof(levelorder_queue_t));
@@ -26,6 +27,12 @@ levelorder_queue_t *create_node(binary_tree_t *node)
 	new->next = NULL;
 
 	return (new);
+=======
+    if (tree == NULL)
+        return (0);
+
+    return binary_tree_is_complete_recursive(tree, 0, binary_tree_size(tree));
+>>>>>>> 4b3aa0092651f133d4857e314c24b0a7bc7e9189
 }
 
 /**
@@ -55,6 +62,7 @@ void free_queue(levelorder_queue_t *head)
 void push(binary_tree_t *node, levelorder_queue_t *head,
 		levelorder_queue_t **tail)
 {
+<<<<<<< HEAD
 	levelorder_queue_t *new;
 
 	new = create_node(node);
@@ -78,6 +86,15 @@ void pop(levelorder_queue_t **head)
 	tmp = (*head)->next;
 	free(*head);
 	*head = tmp;
+=======
+    if (tree == NULL)
+        return (1);
+    if (index >= size)
+        return (0);
+
+    return (binary_tree_is_complete_recursive(tree->left, 2 * index + 1, size) &&
+            binary_tree_is_complete_recursive(tree->right, 2 * index + 2, size));
+>>>>>>> 4b3aa0092651f133d4857e314c24b0a7bc7e9189
 }
 
 /**
@@ -91,6 +108,7 @@ void pop(levelorder_queue_t **head)
  */
 int binary_tree_is_complete(const binary_tree_t *tree)
 {
+<<<<<<< HEAD
 	levelorder_queue_t *head, *tail;
 	unsigned char flag = 0;
 
@@ -128,4 +146,10 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 		pop(&head);
 	}
 	return (1);
+=======
+    if (tree == NULL)
+        return (0);
+
+    return (1 + binary_tree_size(tree->left) + binary_tree_size(tree->right));
+>>>>>>> 4b3aa0092651f133d4857e314c24b0a7bc7e9189
 }
