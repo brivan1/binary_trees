@@ -8,10 +8,10 @@
  */
 int binary_tree_is_complete(const binary_tree_t *tree)
 {
-	if (tree == NULL)
-		return (0);
+    if (tree == NULL)
+        return (0);
 
-	return (binary_tree_is_complete_recursive(tree, 0, binary_tree_size(tree));
+    return binary_tree_is_complete_recursive(tree, 0, binary_tree_size(tree));
 }
 
 /**
@@ -24,12 +24,13 @@ int binary_tree_is_complete(const binary_tree_t *tree)
  */
 int binary_tree_is_complete_recursive(const binary_tree_t *tree, size_t index, size_t size)
 {
-	if (tree == NULL)
-		return (1);
-	if (index >= size)
-		return (0);
-	return (binary_tree_is_complete_recursive(tree->left, 2 * index + 1, size)
-	&& binary_tree_is_complete_recursive(tree->right, 2 * index + 2, size));
+    if (tree == NULL)
+        return (1);
+    if (index >= size)
+        return (0);
+
+    return (binary_tree_is_complete_recursive(tree->left, 2 * index + 1, size) &&
+            binary_tree_is_complete_recursive(tree->right, 2 * index + 2, size));
 }
 
 /**
@@ -40,7 +41,8 @@ int binary_tree_is_complete_recursive(const binary_tree_t *tree, size_t index, s
  */
 size_t binary_tree_size(const binary_tree_t *tree)
 {
-	if (tree == NULL)
-		return (0);
-	return (1 + binary_tree_size(tree->left? ) + binary_tree_size(tree->right? ))
+    if (tree == NULL)
+        return (0);
+
+    return (1 + binary_tree_size(tree->left) + binary_tree_size(tree->right));
 }
