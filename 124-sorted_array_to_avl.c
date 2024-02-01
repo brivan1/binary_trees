@@ -1,43 +1,40 @@
 #include "binary_trees.h"
-#include <stdlib.h>
-
 /**
- * sorted_array_to_avl - Builds an AVL tree from a sorted array
- * @array: A pointer to the first element of the sorted array
- * @size: The number of elements in the array
- *
- * Return: A pointer to the root node of the created AVL tree, or NULL on failure
+ * aux_sort - create the tree using the half element of the array
+ * @parent: parent of the node to create
+ * @array: sorted array
+ * @begin: position where the array starts
+ * @last: position where the array ends
+ * Return: tree created
+ */
+avl_t *aux_sort(avl_t *parent, int *array, int begin, int last)
+{
+	avl_t *root;
+	binary_tree_t *aux;
+	int mid = 0;
+
+	if (begin <= last)
+	{
+		mid = (begin + last) / 2;
+		aux = binary_tree_node((binary_tree_t *)parent, array[mid]);
+		if (aux == NULL)
+			return (NULL);
+		root = (avl_t *)aux;
+		root->left = aux_sort(root, array, begin, mid - 1);
+		root->right = aux_sort(root, array, mid + 1, last);
+		return (root);
+	}
+	return (NULL);
+}
+/**
+ * sorted_array_to_avl - create a alv tree from sorted array
+ * @array: sorted array
+ * @size: size of the sorted array
+ * Return: alv tree form sorted array
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
 	if (array == NULL || size == 0)
 		return (NULL);
-
-	return (build_avl(array, 0, size - 1));
-}
-
-/**
- * build_avl - Recursive helper function to build an AVL tree from a sorted array
- * @array: A pointer to the first element of the sorted array
- * @start: The starting index of the current subtree in the array
- * @end: The ending index of the current subtree in the array
- *
- * Return: A pointer to the root node of the created AVL tree, or NULL on failure
- */
-avl_t *build_avl(int *array, size_t start, size_t end)
-{
-	if (start > end)
-		return (NULL);
-
-	size_t mid = (start + end) / 2;
-
-	avl_t *root = binary_tree_node(NULL, array[mid]);
-
-	if (root == NULL)
-		return (NULL);
-
-	root->left = build_avl(array, start, mid - 1);
-	root->right = build_avl(array, mid + 1, end);
-
-	return (root);
+	return (aux_sort(NULL, array, 0, ((int)(size)) - 1));
 }
