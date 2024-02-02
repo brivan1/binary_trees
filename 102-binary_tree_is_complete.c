@@ -1,46 +1,63 @@
 #include "binary_trees.h"
 
 /**
- * bst_insert - Inserts a value in a Binary Search Tree.
- * @tree: Double pointer to the root node of the BST to insert the value.
- * @value: Value to store in the node to be inserted.
+ * binary_tree_is_complete - Checks if a binary tree is complete.
+ * @tree: A pointer to the root node of the tree to traverse.
  *
- * Return: A pointer to the created node, or NULL on failure.
+ * Return: If the tree is NULL or not complete, 0.
+ *         Otherwise, 1.
+ *
+ * Description: Upon malloc failure, exits with a status code of 1.
  */
-bst_t *bst_insert(bst_t **tree, int value)
+int binary_tree_is_complete(const binary_tree_t *tree)
 {
-    bst_t *new_node;
+	if (tree == NULL)
+		return (0);
 
-    if (tree == NULL)
-        return (NULL);
 
-    if (*tree == NULL)
-    {
-        *tree = binary_tree_node(NULL, value);
-        return (*tree);
-    }
+	const binary_tree_t **queue = malloc(sizeof(binary_tree_t *));
+	if (queue == NULL)
+		exit(1);
 
-    if (value < (*tree)->n)
-    {
-        if ((*tree)->left == NULL)
-        {
-            new_node = binary_tree_node(*tree, value);
-            (*tree)->left = new_node;
-            return (new_node);
-        }
-        return (bst_insert(&((*tree)->left), value));
-    }
-    else if (value > (*tree)->n)
-    {
-        if ((*tree)->right == NULL)
-        {
-            new_node = binary_tree_node(*tree, value);
-            (*tree)->right = new_node;
-            return (new_node);
-        }
-        return (bst_insert(&((*tree)->right), value));
-    }
+	const binary_tree_t **temp = queue;
+	*temp = tree;
+	temp++;
 
-    
-    return (NULL);
+	while (*queue != NULL)
+	{
+		const binary_tree_t *current = *queue;
+		queue++;
+
+		if (current->left != NULL)
+		{
+			*temp = current->left;
+			temp++;
+		}
+		else if (current->right != NULL)
+		{
+			free(queue);
+			return (0);
+		}
+
+		if (current->right != NULL)
+		{
+			*temp = current->right;
+			temp++;
+		}
+		else
+		{
+			while (*queue != NULL)
+			{
+				if ((*queue)->left != NULL || (*queue)->right != NULL)
+				{
+					free(queue);
+					return (0);
+				}
+				queue++;
+			}
+		}
+	}
+
+	free(queue);
+	return (1);
 }
