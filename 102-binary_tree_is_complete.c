@@ -1,45 +1,62 @@
 #include "binary_trees.h"
 
 /**
- * bst_insert - Inserts a value in a Binary Search Tree
- * @tree: Double pointer to the root node of the BST to insert the value
- * @value: Value to store in the node to be inserted
+ * binary_tree_is_complete - Checks if a binary tree is complete
+ * @tree: A pointer to the root node of the tree to check
  *
- * Return: A pointer to the created node, or NULL on failure
+ * Return: 1 if the tree is complete, 0 otherwise
  */
-bst_t *bst_insert(bst_t **tree, int value)
+int binary_tree_is_complete(const binary_tree_t *tree)
 {
-	bst_t *new_node;
-
 	if (tree == NULL)
-		return (NULL);
+		return (0);
 
-	if (*tree == NULL)
+	binary_tree_t **queue = malloc(sizeof(binary_tree_t *));
+
+	if (queue == NULL)
+		return (0);
+
+	int flag1 = 0, flag2 = 0;
+
+	queue[0] = (binary_tree_t *)tree;
+	int front = 0, rear = 1;
+
+	while (front < rear)
 	{
-		*tree = binary_tree_node(NULL, value);
-		return (*tree);
+
+	binary_tree_t *current = queue[front++];
+
+	if (current->left != NULL)
+	{
+
+	if (flag1)
+	{
+		free(queue);
+		return (0);
+	}
+	queue = realloc(queue, (rear + 1) * sizeof(binary_tree_t *));
+	queue[rear++] = current->left;
+	}
+	else
+	{
+		flag1 = 1;
+	if (current->right != NULL)
+	{
+
+	if (flag1)
+	{
+		free(queue);
+		return (0);
+	}
+	queue = realloc(queue, (rear + 1) * sizeof(binary_tree_t *));
+	queue[rear++] = current->right;
+	}
+	else
+	{
+		flag1 = 1;
+	}
 	}
 
-	if (value < (*tree)->n)
-	{
-		if ((*tree)->left == NULL)
-		{
-			new_node = binary_tree_node(*tree, value);
-			(*tree)->left = new_node;
-			return (new_node);
-		}
-		return (bst_insert(&((*tree)->left), value));
-	}
-	else if (value > (*tree)->n)
-	{
-		if ((*tree)->right == NULL)
-		{
-			new_node = binary_tree_node(*tree, value);
-			(*tree)->right = new_node;
-			return (new_node);
-		}
-		return (bst_insert(&((*tree)->right), value));
-	}
-
-	return (NULL);
+	free(queue);
+	return (1);
 }
